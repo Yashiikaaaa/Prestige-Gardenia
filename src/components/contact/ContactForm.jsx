@@ -110,7 +110,7 @@ const ContactForm = ({ contactmodal, setContactModal, setSiteVisitModal }) => {
 
     const payload = {
       name: name.trim().toLowerCase(),
-      phonenumber: number.trim(),
+      phoneNumber: number.trim(),
       campaign: true,
       projectId: "bN8bKHTxVS1JHXUFr8Pp",
       projectName: "prestige Gardenia Estate",
@@ -122,12 +122,16 @@ const ContactForm = ({ contactmodal, setContactModal, setSiteVisitModal }) => {
       },
     };
 
+    console.log(payload, 'this is a check payload')
+
     try {
-      const response = await fetch("https://handlemultiplecampaigndata-66bpoanwxq-uc.a.run.app", {
+      const response = await fetch("https://google-campaign-leads-service-dot-iqol-crm.uc.r.appspot.com/handleMultipleCampaignData", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
+
+      console.log(JSON.stringify(response, null, 2))
 
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
@@ -187,8 +191,8 @@ const ContactForm = ({ contactmodal, setContactModal, setSiteVisitModal }) => {
               </div>
               <div className="mx-auto max-w-sm w-full">
                 <button className="text-white my-5 p-2 w-full bg-PrestigeBrown flex items-center justify-center hover:bg-opacity-90 transition">
-                  <a href="tel:+919036958110" className="flex items-center">
-                    <Phone className="w-5 h-5 mr-2" />9036958110
+                  <a href="tel:+919353329893" className="flex items-center">
+                    <Phone className="w-5 h-5 mr-2" />93533 29893
                   </a>
                 </button>
               </div>
