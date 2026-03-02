@@ -1,4 +1,4 @@
-import herobanner from "../assets/gallery/gallery_img4.jpg"; // Importing hero banner background image
+import herobanner from "../assets/home/gardeniahome.webp"; // Importing hero banner background image
 import Button from "../components/button/buttonMain"; // Importing the Button component for reusability
 import homeLocation from "../assets/home/location.svg"; // Importing location icon
 import { useEffect, useState } from "react";
