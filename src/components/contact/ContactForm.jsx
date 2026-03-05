@@ -168,7 +168,7 @@ const ContactForm = ({ contactmodal, setContactModal, setSiteVisitModal }) => {
       /* GA4 Event Tracking */
       ReactGA.event("contact_form_submit", {
         form_name: "contact_form",
-        project: "Prestige Gardenia Estate",
+        project: "Prestige Gardenia Estate Phase 2",
         utm_source: utmParams.utmSource,
         utm_medium: utmParams.utmMedium,
         utm_campaign: utmParams.utmCampaign,
