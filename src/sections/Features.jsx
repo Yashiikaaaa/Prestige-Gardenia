@@ -3,8 +3,8 @@ import React from 'react';
 export const Features = () => {
   // Array containing the features data
   const featuresData = [
-    { id: 1, title: 'Project Size', value: '50+ acres' },
-    { id: 2, title: 'Possession', value: 'Dec 2028 ' },
+    { id: 1, title: 'Project Size', value: '30+ acres' },
+    { id: 2, title: 'Possession', value: 'Dec 2027 ' },
     { id: 3, title: 'Starting Price', value: '₹ 1.4 Cr*' },
     { id: 4, title: 'Plots', value: '1500- 4000 sq. ft.' },
   ];

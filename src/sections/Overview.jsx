@@ -17,15 +17,18 @@ export const Overview = ({ contactmodal, setContactModal }) => {
           </h1>
           <p className="max-w-2xl md:text-base text-sm text-black font-body font-light">
           <span className="font-body font-bold text-xs md:text-lg ">
-         Prestige Gardenia – Premium Plotted Development in Devanahalli. <p>The plotted development extends over an area of 50 acres and hosts the best plots of dimension range of 1,500 sq. ft. to 4,000 sq. ft. in the heart of the city. </p>
+        Prestige Gardenia Estate - Phase 2
 
           </span>
           <br />
           
             <span>
-            <p>The project has 35+ modern amenities, including children’s play areas, fitness centres, swimming pools, a spa, a gym, a library, etc.   </p>
+            <p>Phase 2 of Prestige Gardenia adds 30+ acres with 200+ premium plots, expanding the project to over 50 acres in Devanahalli.The development offers ready-to-build plots ranging from 1,500 sq. ft. to 4,000 sq. ft. along with 35+ modern amenities, including a clubhouse, swimming pool, gym, children’s play area, landscaped parks, and more.
+
+   </p>
             <br/>
-            <p>These ready to build plots in Bangalore come with wide internal roads and underground utilities. Whether you’re planning to construct your dream home or invest in residential plots near Bangalore Airport, Prestige Gardenia is the perfect place.</p>
+            <p>With wide internal roads and underground utilities, Prestige Gardenia is ideal for building your dream home or investing in premium plots near Bangalore Airport.
+ </p>
 
             
 
