@@ -1,120 +1,57 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { FormAlert } from "./FormAlert";
-import ReactGA from "react-ga4";
 import { Phone, Xmark } from "iconoir-react";
 import overlaybg from "../../assets/gallery/14.webp";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
-import { isValidPhoneNumber } from "libphonenumber-js";
+import { useLeadTracking, LEAD_SOURCES } from "../../hooks/useLeadTracking";
+import { getPersistedParams } from "../../utils/tracking";
+import { trackGA4Event } from "../../utils/analyticsHandler";
 
-const trackingId = import.meta.env.VITE_GA_MEASUREMENT_ID;
+const ContactForm = ({ contactmodal, setContactModal, leadSource }) => {
+  const { trackFormSubmission } = useLeadTracking();
 
-if (trackingId) {
-  ReactGA.initialize(trackingId);
-}
-
-const gtag_report_conversion = (url) => {
-  if (typeof gtag !== "undefined") {
-    var callback = function () {
-      if (typeof url !== "undefined") {
-        window.location = url;
-      }
-    };
-
-    gtag("event", "conversion", {
-      send_to: "AW-16460421460/zvkSCLj3m6caENSy-Kg9",
-      value: 1.0,
-      currency: "INR",
-      event_callback: callback,
-    });
-  }
-};
-
-const ContactForm = ({ contactmodal, setContactModal, setSiteVisitModal }) => {
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
   const [alert, setAlert] = useState(null);
   const [loading, setLoading] = useState(false);
   const [utmParams, setUtmParams] = useState({});
+  const [isMobile, setIsMobile] = useState(false);
 
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  // ✅ FIXED VALIDATION (less strict, works reliably)
+  const isFormValid = useMemo(() => {
+    if (!name || name.trim().length < 2) return false;
+    if (!number || number.length < 10) return false;
+    return true;
+  }, [name, number]);
 
+  // ✅ Responsive check
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
     handleResize();
     window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  function getUTMParams() {
-    const params = new URLSearchParams(window.location.search);
-
-    const source = params.get("utm_source");
-    const medium = params.get("utm_medium");
-    const campaign = params.get("utm_campaign");
-
-    ReactGA.send({
-      hitType: "pageview",
-      utm_source: source,
-      utm_medium: medium,
-      utm_campaign: campaign,
-    });
-
-    return {
-      utmSource: source || "",
-      utmMedium: medium || "",
-      utmCampaign: campaign || "",
-    };
-  }
-
   useEffect(() => {
-    setUtmParams(getUTMParams());
+    setUtmParams(getPersistedParams());
   }, []);
 
   const validateForm = () => {
-    if (!name || !number) {
+    if (!isFormValid) {
       setAlert(
         <FormAlert
-          message="Please fill in all required fields."
+          message="Please enter valid name and phone number."
           onClose={() => setAlert(null)}
         />
       );
       return false;
     }
-
-    const nameRegex = /^[A-Za-z ]+$/;
-
-    if (!nameRegex.test(name)) {
-      setAlert(
-        <FormAlert
-          message="Invalid Name. Use only alphabets and spaces."
-          onClose={() => setAlert(null)}
-        />
-      );
-      return false;
-    }
-
-    if (!isValidPhoneNumber(number)) {
-      setAlert(
-        <FormAlert
-          message="Invalid Phone Number."
-          onClose={() => setAlert(null)}
-        />
-      );
-      return false;
-    }
-
     return true;
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // ✅ IMPORTANT
 
     if (loading) return;
 
@@ -125,21 +62,35 @@ const ContactForm = ({ contactmodal, setContactModal, setSiteVisitModal }) => {
       return;
     }
 
-    setAlert(
-      <FormAlert message="Submitting form..." onClose={() => setAlert(null)} />
+    // ✅ Internal tracking
+    trackFormSubmission(
+      leadSource?.source || LEAD_SOURCES.UNKNOWN,
+      "contact_form",
+      leadSource?.propertyType
     );
+
+    setAlert(<FormAlert message="Submitting form..." onClose={() => setAlert(null)} />);
+
+    // ✅ Interaction event
+    trackGA4Event("CONTACT_FORM_INTERACTION", {
+      lead_source: leadSource?.source || "unknown",
+      event_type: "submission_start"
+    });
 
     const payload = {
       name: name.trim().toLowerCase(),
       phoneNumber: number.trim(),
       campaign: true,
       projectId: "",
-      projectName: "prestige Gardenia Estate",
-      currentAgent: "unknown",
+      projectName: "Prestige Gardenia Estate Phase",
+      currentAgent: "Unknown",
       utmDetails: {
-        source: utmParams.utmSource || null,
-        medium: utmParams.utmMedium || null,
-        campaign: utmParams.utmCampaign || null,
+        source: utmParams.utm_source || null,
+        medium: utmParams.utm_medium || null,
+        campaign: utmParams.utm_campaign || null,
+        term: utmParams.utm_term || null,
+        content: utmParams.utm_content || null,
+        gclid: utmParams.gclid || null,
       },
     };
 
@@ -148,30 +99,21 @@ const ContactForm = ({ contactmodal, setContactModal, setSiteVisitModal }) => {
         "https://google-campaign-leads-service-dot-iqol-crm.uc.r.appspot.com/handleMultipleCampaignData",
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         }
       );
 
-      if (!response.ok)
+      if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-      const result = await response.json();
+      await response.json();
 
-      console.log("Success:", result);
-
-      /* Google Ads Conversion */
-      gtag_report_conversion();
-
-      /* GA4 Event Tracking */
-      ReactGA.event("contact_form_submit", {
-        form_name: "contact_form",
-        project: "Prestige Gardenia Estate Phase 2",
-        utm_source: utmParams.utmSource,
-        utm_medium: utmParams.utmMedium,
-        utm_campaign: utmParams.utmCampaign,
+      // 🔥 FINAL SUBMIT EVENT (FIXED KEY)
+      trackGA4Event("CONTACT_FORM_SUBMIT", {
+        lead_source: leadSource?.source || "unknown",
+        form_name: "contact_form"
       });
 
       setName("");
@@ -185,7 +127,6 @@ const ContactForm = ({ contactmodal, setContactModal, setSiteVisitModal }) => {
       );
     } catch (error) {
       console.error("Error submitting form:", error);
-
       setAlert(
         <FormAlert
           message="Something went wrong. Please try again later."
@@ -193,7 +134,7 @@ const ContactForm = ({ contactmodal, setContactModal, setSiteVisitModal }) => {
         />
       );
     } finally {
-      setTimeout(() => setLoading(false), 1000);
+      setTimeout(() => setLoading(false), 800);
     }
   };
 
@@ -201,72 +142,67 @@ const ContactForm = ({ contactmodal, setContactModal, setSiteVisitModal }) => {
     <div>
       <div className="fixed inset-0 bg-black opacity-80 z-30"></div>
 
-      <div
-        className={`fixed ${
-          isMobile ? "" : "top-24"
-        } left-0 right-0 bg-white z-40 w-full md:w-fit mx-auto`}
-      >
+      <div className={`fixed ${isMobile ? "" : "top-24"} left-0 right-0 bg-white z-40 w-full md:w-fit mx-auto`}>
         <div
           className="max-w-7xl mx-auto flex gap-5 items-center justify-between border shadow-xl overflow-hidden"
           style={{ height: "75vh" }}
         >
-          <img
-            src={overlaybg}
-            alt="background"
-            className="hidden md:block w-full h-full"
-          />
+          <img src={overlaybg} alt="background" className="hidden md:block w-full h-full" />
 
-          <div className="mx-auto w-full gap-3 px-8 h-full flex flex-col items-center justify-center">
+          <div className="mx-auto w-full px-8 h-full flex flex-col items-center justify-center">
+            
+            {/* Close */}
             <button
-              className="text-3xl focus:outline-none absolute top-2 right-2 bg-white"
-              onClick={() => setContactModal(!contactmodal)}
+              className="absolute top-2 right-2 bg-white"
+              onClick={() => setContactModal(false)}
             >
               <Xmark />
             </button>
 
-            <div className="font-subheading font-semibold text-[28px] text-center pt-8">
+            <div className={`font-semibold text-[28px] text-center ${isMobile ? "pt-4" : "pt-36"} md:pt-8`}>
               Want to know more? Enquire Now!
             </div>
 
-            <div className="mx-auto max-w-sm pt-8 w-full">
+            {/* Name */}
+            <div className="max-w-sm w-full pt-8">
               <input
                 type="text"
-                className="p-4 w-full border border-gray-500 rounded-sm"
+                className="p-4 w-full border border-gray-500"
                 placeholder="Full Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
 
-            <div className="mx-auto max-w-sm py-4 w-full">
+            {/* Phone */}
+            <div className="max-w-sm w-full py-4">
               <PhoneInput
-                className="border border-gray-500 rounded-sm h-16 p-5"
+                className="border border-gray-500 h-16 p-4"
                 placeholder="Contact Number"
                 defaultCountry="IN"
                 value={number}
-                onChange={setNumber}
+                onChange={(value) => setNumber(value || "")} // ✅ FIX
               />
             </div>
 
-            <div className="mx-auto max-w-sm w-full">
+            {/* Submit */}
+            <div className="max-w-sm w-full">
               <button
                 onClick={handleSubmit}
-                className={`text-white my-5 p-2 w-full ${
-                  loading ? "bg-gray-400" : "bg-PrestigeBrown"
+                className={`w-full p-3 text-white ${
+                  loading || !isFormValid
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-PrestigeBrown"
                 }`}
-                disabled={loading}
               >
                 {loading ? "Submitting..." : "Submit"}
               </button>
             </div>
 
-            <div className="mx-auto max-w-sm w-full">
-              <a
-                href="tel:+919353329893"
-                className="text-white my-5 p-2 w-full bg-PrestigeBrown flex items-center justify-center"
-              >
-                <Phone className="w-5 h-5 mr-2" />
-                93533 29893
+            {/* Call CTA */}
+            <div className="max-w-sm w-full mt-4">
+              <a href="tel:+919353329893" className="block bg-PrestigeBrown text-white p-3 text-center">
+                <Phone className="inline mr-2" /> 93533 29893
               </a>
             </div>
           </div>
