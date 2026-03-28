@@ -163,7 +163,7 @@ const ContactForm = ({ contactmodal, setContactModal, setSiteVisitModal }) => {
       console.log("Success:", result);
 
       /* Google Ads Conversion */
-      gtag_report_conversion();
+      //gtag_report_conversion();
 
       /* GA4 Event Tracking */
       ReactGA.event("contact_form_submit", {
