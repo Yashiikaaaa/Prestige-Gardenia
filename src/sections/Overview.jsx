@@ -23,7 +23,7 @@ export const Overview = ({ contactmodal, setContactModal }) => {
           <br />
           
             <span>
-            <p>Phase 2 of Prestige Gardenia adds 30+ acres with 200+ premium plots, expanding the project to over 50 acres in Devanahalli.The development offers ready-to-build plots ranging from 1,500 sq. ft. to 4,000 sq. ft. along with 35+ modern amenities, including a clubhouse, swimming pool, gym, children’s play area, landscaped parks, and more.
+            <p>Phase 2 of Prestige Gardenia adds 30+ acres with 200+ premium plots, expanding the project to over 75 acres in Devanahalli.The development premium plots ranging from 1,500 sq. ft. to 4,000 sq. ft. along with 35+ modern amenities, including a clubhouse, swimming pool, gym, children’s play area, landscaped parks, and more.
 
    </p>
             <br/>

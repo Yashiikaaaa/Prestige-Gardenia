@@ -1,0 +1,35 @@
+{
+  "events": {
+    "CONTACT_FORM_INTERACTION": {
+      "action": "Contact_form_interaction",
+      "category": "Engagement",
+      "label": "Form Interaction",
+      "description": "Triggered when a user opens a contact form or clicks an enquire button."
+    },
+    "CONTACT_FORM_SUBMIT": {
+      "action": "Contact_form_submit",
+      "category": "Conversion",
+      "label": "Form Submission",
+      "description": "Triggered when a user successfully submits a contact form."
+    },
+    "WHATSAPP_CHAT_CLICK": {
+      "action": "whatsapp_click",
+      "category": "Contact",
+      "label": "WhatsApp Icon Click",
+      "description": "Triggered when a user clicks the WhatsApp float icon or link."
+    },
+    "PHONE_CALL_CLICK": {
+      "action": "phone_click",
+      "category": "Contact",
+      "label": "Phone Number Click",
+      "description": "Triggered when a user clicks on a phone number or call button."
+    },
+    "DOWNLOAD_BROCHURE_CLICK": {
+      "action": "brochure_download_click",
+      "category": "Engagement",
+      "label": "Brochure Download Click",
+      "description": "Triggered when a user clicks the download brochure button."
+    }
+  }
+}
+
