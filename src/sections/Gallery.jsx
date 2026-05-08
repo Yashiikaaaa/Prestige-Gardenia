@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-// import pic1 from '../assets/gallery/image1.jpg'
+import pic1 from '../assets/gallery/Screenshot 2026-05-08 195411.png'
 import pic2 from '../assets/footer/1.jpg'
 import pic3 from '../assets/gallery/xyz1.jpeg'
 import pic4 from '../assets/gallery/gallery_7.png'
-// import pic5 from '../assets/gallery/image6.webp'
+import pic5 from '../assets/gallery/Screenshot 2026-05-08 195426.png'
 import pic6 from '../assets/gallery/gallery_5.png'
 
 import pic7 from '../assets/gallery/xyz4.jpg'
@@ -12,7 +12,7 @@ import pic9 from '../assets/gallery/gallery-3.jpg'
 import pic10 from '../assets/gallery/xyz1.jpg'
 import pic12 from '../assets/gallery/31.jpg'
 import pic13 from '../assets/gallery/xyz1.jpg'
-// import pic14 from '../assets/gallery/24.webp'
+import pic14 from '../assets/gallery/Screenshot 2026-05-08 195436.png'
 // import pic15 from '../assets/gallery/25.webp'
 // import pic16 from '../assets/gallery/26.webp'
 // import pic7 from '../assets/gallery/7.png'
@@ -28,7 +28,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 const tabs = [
-  { id: 1, title: 'EXTERIOR', photos: [ pic10,pic3,pic4,pic6,pic7,pic8,pic9,pic2,pic12,pic13] },
+  { id: 1, title: 'EXTERIOR', photos: [ pic1,pic5,pic14,pic10,pic3,pic4,pic7,pic8,pic2,pic13] },
 ];
 
 function NextArrow(props) {
