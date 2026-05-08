@@ -1,5 +1,5 @@
 import React from 'react';
-import image from '../assets/gallery/image7.png';
+import image from '../assets/gallery/Screenshot 2026-05-08 195436.png';
 import Button from '../components/button/buttonMain';
 
 // Overview Component
