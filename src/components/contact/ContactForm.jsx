@@ -82,8 +82,8 @@ const ContactForm = ({ contactmodal, setContactModal, leadSource }) => {
       phoneNumber: number.trim(),
       campaign: true,
       projectId: "",
-      projectName: "Prestige Gardenia Estate Phase",
-      currentAgent: "Unknown",
+      projectName: "prestige Gardenia Estate Phase 2",
+      currentAgent: "unknown",
       utmDetails: {
         source: utmParams.utm_source || null,
         medium: utmParams.utm_medium || null,
@@ -108,7 +108,12 @@ const ContactForm = ({ contactmodal, setContactModal, leadSource }) => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      await response.json();
+      const result = await response.json();
+
+      console.log("Success:", result);
+
+      /* Google Ads Conversion */
+      //gtag_report_conversion();
 
       // 🔥 FINAL SUBMIT EVENT (FIXED KEY)
       trackGA4Event("CONTACT_FORM_SUBMIT", {
