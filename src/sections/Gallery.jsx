@@ -28,7 +28,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 const tabs = [
-  { id: 1, title: 'EXTERIOR', photos: [ pic10,pic3,pic4,pic6,pic7,pic8,pic9,pic2,pic12,pic13] },
+  { id: 1, title: 'EXTERIOR', photos: [ pic10,pic3,pic4,pic7,pic8,pic2,pic12,pic13] },
 ];
 
 function NextArrow(props) {
