@@ -24,10 +24,10 @@ const Pricing = ({ setContactModal, contactmodal, formSubmitted }) => {
   };
 
   const propertyTypes = [
-    { type: "3,000 sq.ft ", price: "₹ 3.25 Cr ++",  image: bhk1 },
+    { type: "3,000 sq.ft ", price: "₹ 2.5 Cr ++",  image: bhk1 },
 
-    { type: "4,000 sq.ft ", price: "₹ 3.25 Cr ++",  image: bhk2 },
-    { type: "6,000 sq.ft ", price: "₹ 3.25 Cr ++",  image: bhk5 },
+    { type: "4,000 sq.ft ", price: "₹ 3.4 Cr ++",  image: bhk2 },
+    { type: "6,000 sq.ft ", price: "₹ 5.1 Cr ++",  image: bhk5 },
     // { type: "4 BHK Grande", price: "₹ 3.55 Cr ++", size: "2203 Sq.ft.", image: bhk2 },
   ];
 
@@ -54,16 +54,16 @@ const Pricing = ({ setContactModal, contactmodal, formSubmitted }) => {
               <div className="max-w-md relative text-black">
                 <div className="text-xl pt-4 flex items-center font-normal">
                   <span className="text-lg md:text-xl">&bull;</span>{" "}
-                  <span className={`text-lg md:text-xl ${!isUnlocked ? "blur-md" : ""}`}>
-                    Starting at: {property.price}
+                  <span className={`text-lg md:text-xl ${!isUnlocked ? "" : ""}`}>
+                     {property.price}
                   </span>
                 </div>
-                <div className="text-xl pt-4 flex items-center font-normal">
+                {/* <div className="text-xl pt-4 flex items-center font-normal">
                   <span className="text-lg md:text-xl">&bull;</span>
                   <span className={`text-lg md:text-xl ${!isUnlocked ? "blur-md" : ""}`}>
                     Size: {property.size}
                   </span>
-                </div>
+                </div> */}
 
                 <Button
                   text="Get Pricing"
